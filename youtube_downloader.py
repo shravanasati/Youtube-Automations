@@ -16,6 +16,8 @@ class YouTubeDownloader(YouTube):
         """
         Constructor.
         """
+        chdir(f"C:\\Users\\{getlogin()}\\Downloads")
+
         self.video_url = video_url
         self.format = ".mp4"
 
@@ -39,12 +41,8 @@ class YouTubeDownloader(YouTube):
                 self.filepath = filepath
             else:
                 print("No such directory in the system, hence the video would be downloaded in the current working directory: {}.".format(getcwd()))
-                if "system32" in getcwd():
-                    chdir(f"C:\\Users\\{getlogin()}\\Desktop")
                 self.filepath = getcwd()
         else:
-            if "system32" in getcwd():
-                    chdir(f"C:\\Users\\{getlogin()}\\Desktop")
             self.filepath = getcwd()
 
 
@@ -64,9 +62,7 @@ class YouTubeDownloader(YouTube):
         Shows the download progress.
         """
         # * waiting for 10 seconds because sometimes the file is not created and then it results in FileNotFoundError
-        print("Starting show_progress...")
         sleep(10)
-        print("Started")
 
         # * original filepath is where the video would be downloaded
         original_path = join_path(getcwd(), self.video_title + self.format)
