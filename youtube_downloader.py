@@ -83,7 +83,7 @@ class YouTubeDownloader(YouTube):
         Moves the downloaded file to its destined filepath.
         """
         try:
-            original_path = join_path(getcwd(), self.title + self.format)
+            original_path = join_path(getcwd(), self.video_title + self.format)
             
             # * moving the file to self.filepath
             move_file(original_path, self.filepath)
