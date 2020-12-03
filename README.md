@@ -27,7 +27,9 @@ Paste it as the value for ```api_key``` variable.
 You would have to provide the channel ID of the youtube channel you want to track. 
 
 For example:
+
 ![Channel ID](example.png)
+
 The channel ID is the highlighted part of the URL, present just after the **channel** parameter.
 Paste it as the value for ```channel_id``` variable.
 
