@@ -121,7 +121,7 @@ class YouTubeDownloader():
             quit()
         
 
-    def download_video(self, resolution:str="480p"):
+    def download_video(self, resolution:str="720p"):
         """
         Downloads the given youtube video in video format.
         """
