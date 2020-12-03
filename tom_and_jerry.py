@@ -4,9 +4,9 @@ from webbrowser import open_new_tab
 from random import randint
 
 def watch_tom_and_jerry():
-    # youtube api key and the playlist id which you want to track. 
-    api_key = "AIzaSyBtk8bYfNbLbDvrfXJbtop6haJuhOxPX_g"
-    playlist_id = "PLbEif3LMBbrxFaXONS-1Uf51G0hkzQ3j4"
+    # youtube api key
+    api_key = ""
+    playlist_id = "PLbEif3LMBbrxFaXONS-1Uf51G0hkzQ3j4" 
 
     # api search url
     url = f"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails&maxResults=110&playlistId={playlist_id}&key={api_key}"
@@ -23,7 +23,7 @@ def watch_tom_and_jerry():
 
         while True:
             # checking if the video id the api returned is in the text file, because if it is, then you won't want to see the same video again
-            videoId = (parser['items'][randint(1, 109)]['contentDetails']['videoId'])
+            videoId = (parser['items'][randint(0, 108)]['contentDetails']['videoId'])
             if videoId in fc:
                 continue
             else:

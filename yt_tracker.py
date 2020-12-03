@@ -3,11 +3,10 @@ from win10toast import ToastNotifier
 from time import sleep
 from json import loads as jloads
 from requests import get as rget
-from threading import Thread
 from pyautogui import locateOnScreen, click, ImageNotFoundException 
 
 
-def speak(text):
+def speak(text:str):
     """
     Speaks the given string.
     """
@@ -49,8 +48,6 @@ def look_for_new_video():
     parser = jloads(r)
     old_vidID = (parser['items'][0]['id']['videoId'])
 
-    # intialising toaster object for notifications
-    toaster = ToastNotifier()
 
     tries = 0
     while True:
@@ -71,15 +68,20 @@ def look_for_new_video():
                 # fetching video title from the api data
                 title = parser['items'][0]['snippet']['title']
 
+                # intialising toaster object for notifications
+                toaster = ToastNotifier()
+
                 # alerting the user by a notification and speaking
                 toaster.show_toast(f"Youtube Tracker", f"New video from {channel_name} has arrived!\nTitle: {title}", duration=5)
-                
+
                 speak(f"New video has arrived! Title is:")
                 speak(title)
 
                 # opening the video on the default browser
                 videoURL = base_video_url + new_vidID
                 webbrowser.open(videoURL)
+                sleep(10)
+                like_the_video()
 
 
             except KeyboardInterrupt:
@@ -87,7 +89,6 @@ def look_for_new_video():
 
             except Exception as e:
                 print(e)
-                raise SystemExit
         
 if __name__ == "__main__":
     look_for_new_video()
