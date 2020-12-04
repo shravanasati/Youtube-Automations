@@ -45,8 +45,8 @@ class YouTubeDownloader():
         else:
             self.filepath = getcwd()
 
-
-    def index_of_key(self, key, d:dict):
+    @staticmethod
+    def index_of_key(key, d:dict):
         """
         Returns the index of the key from the dictionary.
         """
