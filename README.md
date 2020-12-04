@@ -50,7 +50,9 @@ The **Youtube Downloader** is an interface to download youtube videos with the h
 ## Using Git
 Type the following command in your Git Bash:
 
+- For SSH:
 ```git clone git@github.com:Shravan-1908/Youtube-Automations.git```
+- For HTTPS: ```git clone https://github.com/Shravan-1908/Youtube-Automations.git```
 
 The whole repository would be cloned in the directory you opened the Git Bash in.
 
