@@ -45,12 +45,12 @@ class YouTubeDownloader():
         else:
             self.filepath = getcwd()
 
-    @staticmethod
-    def index_of_key(key, d:dict):
+
+    def index_of_key(self, key, d:dict):
         """
         Returns the index of the key from the dictionary.
         """
-        # * for getting the next resolution of the video in case the provided resolution is not available
+        # * for getting the next resolution of the video in case the provided resolution is not availables
         for i, k in enumerate(d.keys()):
             if k == key:
                 index = i
@@ -152,7 +152,8 @@ class YouTubeDownloader():
             self.show_progress(download_size)
             self.move_after_download()
 
-
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":
