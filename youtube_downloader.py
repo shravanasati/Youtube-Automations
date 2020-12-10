@@ -135,14 +135,17 @@ class YouTubeDownloader():
             stream = self.yt.streams.get_by_itag(resolutions[resolution])
 
             # * `stream = None` means that the requested resolution is not available for the given video, hence switching to the next lower resolution
-            while stream == None:
+            while True:
                 # * getting the next lower resolution
                 next_index = self.index_of_key(resolution, resolutions) + 1
-                next_res = list(resolutions.values())[next_index]
+                next_res = list(resolutions.keys())[next_index]
                 print(f"{resolution} resolution not available for this video, switching to {next_res} resolution.")
 
                 # * fetching the new stream until the resolution is correct
                 stream = self.yt.streams.get_by_itag(resolutions[next_res])
+                if stream != None:
+                    break
+                resolution = next_res
 
 
             download_size = stream.filesize
