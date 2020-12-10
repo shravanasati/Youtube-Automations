@@ -12,7 +12,7 @@ class YouTubeDownloader():
     """
     Interface to download youtube videos using pytube module.
     """
-    def __init__(self, video_url, filepath=None):
+    def __init__(self, video_url, type, filepath=None):
         """
         Constructor.
         """
@@ -20,6 +20,7 @@ class YouTubeDownloader():
 
         self.video_url = video_url
         self.format = ".mp4"
+        self.type = type
 
         # * validating the url
         valid = validators.url(self.video_url)
@@ -75,9 +76,10 @@ class YouTubeDownloader():
             print(f"{ratio:.2f}% download completed ({size_on_disk/1000000}MB/{filesize/1000000}MB).")
             sleep(5)
 
-        # changing extension to mp3 
-        rename(original_path, join_path(getcwd(), self.video_title + ".mp3"))
-        self.format = ".mp3"
+        # changing extension to mp3 if audio
+        if self.type == "audio":
+            rename(original_path, join_path(getcwd(), self.video_title + ".mp3"))
+            self.format = ".mp3"
 
     def move_after_download(self):
         """
@@ -144,6 +146,7 @@ class YouTubeDownloader():
                 # * fetching the new stream until the resolution is correct
                 stream = self.yt.streams.get_by_itag(resolutions[next_res])
                 if stream != None:
+                    print("\n")
                     break
                 resolution = next_res
 
@@ -175,7 +178,7 @@ if __name__ == "__main__":
 
     if format == 1:
         print("\nWait while the download is being started...")
-        yt = YouTubeDownloader(url, filepath=filepath)
+        yt = YouTubeDownloader(url, "audio", filepath=filepath)
         yt.download_audio()
 
     elif format == 2:
@@ -188,7 +191,7 @@ if __name__ == "__main__":
 
         print("Wait while the download is being started...")
 
-        yt = YouTubeDownloader(url, filepath=filepath)
+        yt = YouTubeDownloader(url, "video", filepath=filepath)
         yt.download_video(res)
 
     else:
