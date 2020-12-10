@@ -60,21 +60,23 @@ class YouTubeDownloader():
         """
         Shows the download progress and changes extension to mp3.
         """
-        # * waiting for 10 seconds because sometimes the file is not created and then it results in FileNotFoundError
-        sleep(10)
-
         # * original filepath is where the video would be downloaded
         original_path = join_path(getcwd(), self.video_title + self.format)
-        size_on_disk = getsize(original_path)
 
+        # * waiting for seconds until the file is created because sometimes the file is not created and then it results in FileNotFoundError
+        while not exists(original_path):
+            sleep(1)
+        
+        # * showing the download progress
+        size_on_disk = getsize(original_path)
         while size_on_disk < filesize:
             size_on_disk = getsize(original_path)
             ratio = (size_on_disk / filesize) * 100
             print(f"{ratio:.2f}% download completed ({size_on_disk/1000000}MB/{filesize/1000000}MB).")
             sleep(5)
 
-        # changing extension to mp3
-        rename(join_path(getcwd(), self.video_title + self.format), join_path(getcwd(), self.video_title + ".mp3"))
+        # changing extension to mp3 
+        rename(original_path, join_path(getcwd(), self.video_title + ".mp3"))
         self.format = ".mp3"
 
     def move_after_download(self):
