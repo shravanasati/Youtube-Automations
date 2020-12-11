@@ -32,7 +32,7 @@ For example:
 ![Channel ID](example.png)
 
 
-The channel ID is the highlighted part of the URL, present just after the **channel** parameter.
+The channel ID is the highlighted part of the URL, present just after the **channel** parameter. You'll get such url when you visit a Youtube channel's home page.
 Paste it as the value for ```channel_id``` variable.
 
 ### Channel name
