@@ -106,6 +106,10 @@ class YouTubeDownloader():
         try:
             # * getting the audio stream from pytube module
             stream = self.yt.streams.filter(only_audio=True).get_audio_only()
+            if stream == None:
+                print("Error: No audio stream available for this video!")
+                quit()
+
             download_size = stream.filesize
             print("Downloading the audio {}...".format(self.video_title))
 
@@ -121,7 +125,7 @@ class YouTubeDownloader():
             quit()
 
         except Exception as e:
-            print("Following error occured: ", e)
+            print("Following error occured:", e)
             quit()
         
 
@@ -140,6 +144,9 @@ class YouTubeDownloader():
             while True:
                 # * getting the next lower resolution
                 next_index = self.index_of_key(resolution, resolutions) + 1
+                if next_index > 7:
+                    print("No video stream available for this video!")
+                    quit()
                 next_res = list(resolutions.keys())[next_index]
                 print(f"{resolution} resolution not available for this video, switching to {next_res} resolution.")
 
