@@ -1,12 +1,13 @@
-from pytube import YouTube #, Playlist
+from pytube import YouTube, Playlist
 import validators
-from os import getcwd, chdir, getlogin, rename
-from os.path import join as join_path, getsize, exists
+from os import getcwd, chdir, getlogin, rename, mkdir
+from os.path import join as join_path, getsize, exists, expanduser
 from multiprocessing import Process
 from time import sleep
 import re
 from shutil import move as move_file
-
+from string import ascii_letters as alphabets
+from random import choice as random_choice
 
 class YouTubeDownloader():
     """
@@ -14,9 +15,13 @@ class YouTubeDownloader():
     """
     def __init__(self, video_url, type, filepath=None):
         """
-        Constructor.
+        video_url = The URL of the Youtube video.
+
+        type = Download type, either of 'audio' or 'video'.
+
+        filepath = The file location where all the videos of the playlist will be saved. In the filepath, a new directory with the playlost name would be created.
         """
-        chdir(f"C:\\Users\\{getlogin()}\\Downloads")
+        chdir(join_path(expanduser("~"), "Downloads"))
 
         self.video_url = video_url
         self.format = ".mp4"
@@ -46,8 +51,8 @@ class YouTubeDownloader():
         else:
             self.filepath = getcwd()
 
-
-    def index_of_key(self, key, d:dict):
+    @staticmethod
+    def index_of_key(key, d:dict):
         """
         Returns the index of the key from the dictionary.
         """
@@ -171,38 +176,139 @@ class YouTubeDownloader():
             print(e)
 
 
+class PlaylistDownloader():
+    """
+    Base class for downloading playlists using Playlst class of pytube.
+    """
+    def __init__(self, playlist_url, type, filepath) -> None:
+        """
+        playlist_url = URL to the playlist on Youtube.
+        
+        type = Download type, whether audio or video.
+
+        filepath = The file location where all the videos of the playlist will be saved. In the filepath, a new directory with the playlost name would be created.
+        """
+        self.playlist_url = playlist_url
+        self.type = type
+
+        # * validating the url
+        valid = validators.url(self.playlist_url)
+        if valid != True:
+            print("Invalid playlist url!")
+            quit()
+
+        
+        # * initialising playlist object
+        self.plt = Playlist(playlist_url)
+
+        # * altering the playlist title for filepath since [.?*/,|\:;] are not allowed in a filename
+        playlist_name = self.plt.title
+        removals = re.compile(r'''[.?*/,|\:;]''')
+        self.playlist_name = re.sub(removals, "", playlist_name)
+
+        # * checking the filepath
+        if filepath != None:
+            if exists(filepath):
+                self.filepath = join_path(filepath, playlist_name)
+            else:
+                print("No such directory in the system, hence the video would be downloaded in the current working directory: {}.".format(getcwd()))
+                self.filepath = join_path(getcwd(), playlist_name)
+        else:
+            self.filepath = join_path(getcwd(), playlist_name)
+
+        while True:
+            try:
+                mkdir(join_path(filepath, self.playlist_name))
+                break
+            except FileExistsError:
+                new_folder_name = join_path(filepath, self.playlist_name) + "" + random_choice(alphabets)
+                print(f"Path '{join_path(filepath, self.playlist_name)}' already exists, hence making new folder with name {new_folder_name}.")
+                mkdir(new_folder_name)
+                break
+
+    def download_all_videos(self, resolution:str="720p"):
+        for vid in self.plt.video_urls:
+            yt = YouTubeDownloader(vid, "video", self.filepath)
+            yt.download_video(resolution)
+
+    def download_all_audio(self):
+        for vid in self.plt.video_urls():
+            yt =YouTubeDownloader(vid, "audio", self.filepath)
+            yt.download_audio()
+
+
 if __name__ == "__main__":
     print("Welcome to the Youtube Video Downloader!")
 
-    url = input("Enter the video url for the video you want to download: ")
+    playlist_or_video = int(input("What to download? \n 1. Video \n 2. Playlist \n"))
+    
+    if playlist_or_video == 1:
+        url = input("Enter the video url for the video you want to download: ")
 
-    format = int(input("What do you want to download from the video:\n 1. Audio \n 2. Video \n"))
+        format = int(input("What do you want to download from the video:\n 1. Audio \n 2. Video \n"))
 
-    filepath = input("Enter the optional file location (press enter if you dont want to specify file location): ")
+        filepath = input("Enter the optional file location (press enter if you dont want to specify file location): ")
 
-    if filepath == "":
-        filepath = None
+        if filepath == "":
+            filepath = None
 
-    if format == 1:
-        print("\nWait while the download is being started...")
-        yt = YouTubeDownloader(url, "audio", filepath=filepath)
-        yt.download_audio()
+        if format == 1:
+            print("\nWait while the download is being started...")
+            yt = YouTubeDownloader(url, "audio", filepath=filepath)
+            yt.download_audio()
 
-    elif format == 2:
-        res = input("Enter desired resoulution for the video (example: '720p'): ").strip()
-        available_res = ["2160p", "1440p", "1080p", "720p", "480p", "360p", "240p", "144p"]
+        elif format == 2:
+            res = input("Enter desired resoulution for the video (example: '720p'): ").strip()
+            available_res = ["2160p", "1440p", "1080p", "720p", "480p", "360p", "240p", "144p"]
 
-        if res not in available_res:
-            print("Invalid resolution! Resolutions can range in", available_res)
+            if res not in available_res:
+                print("Invalid resolution! Resolutions can range in", available_res)
+                quit()
+
+            print("Wait while the download is being started...")
+
+            yt = YouTubeDownloader(url, "video", filepath=filepath)
+            yt.download_video(res)
+
+        else:
+            print("Invalid input!")
             quit()
 
-        print("Wait while the download is being started...")
 
-        yt = YouTubeDownloader(url, "video", filepath=filepath)
-        yt.download_video(res)
+    elif playlist_or_video == 2:
+        url = input("Enter the playlist url for the playlist you want to download: ")
+
+        format = int(input("What do you want to download from the playlist:\n 1. Audio \n 2. Video \n"))
+
+        filepath = input("Enter the optional file location (press enter if you dont want to specify file location): ")
+
+        if filepath == "":
+            filepath = None
+
+        if format == 1:
+            print("\nWait while the download is being started...")
+            plt = PlaylistDownloader(url, "audio", filepath=filepath)
+            plt.download_all_audio()
+
+        elif format == 2:
+            res = input("Enter desired resoulution for the video (example: '720p'): ").strip()
+            available_res = ["2160p", "1440p", "1080p", "720p", "480p", "360p", "240p", "144p"]
+
+            if res not in available_res:
+                print("Invalid resolution! Resolutions can range in", available_res)
+                quit()
+
+            print("Wait while the download is being started...")
+
+            plt = PlaylistDownloader(url, "video", filepath=filepath)
+            plt.download_all_videos(res)
+
+        else:
+            print("Invalid input!")
+            quit()
+
 
     else:
         print("Invalid input!")
-        quit()
 
     print("Thanks for visiting!")

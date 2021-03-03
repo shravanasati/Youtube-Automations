@@ -40,11 +40,12 @@ Pretty obvious, the name of the channel you want to track (```channel_name```).
 
 
 # Youtube Downloader
-The **Youtube Downloader** is an interface to download youtube videos with the help of [```pytube```](https://github.com/nficano/pytube) module. You can download any Youtube video by providing just the video url, download location, the desired format and resolution.
+The **Youtube Downloader** is an interface to download youtube videos with the help of [```pytube```](https://github.com/pytube/pytube) module. You can download any Youtube video by providing just the video url, download location, the desired format and resolution.
 
 ## Features
 * Download any YouTube video in desired format (audio/video)
 * Download the video in desired resolution
+* Donwload playlists as a whole, again in desired format and resolution
 * Watch the download progress
 * Efficient exception handling
 
