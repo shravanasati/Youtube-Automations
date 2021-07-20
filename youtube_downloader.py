@@ -262,7 +262,7 @@ if __name__ == "__main__":
             print("Invalid input!")
 
         filepath = input(
-            "Enter the optional file location (press enter if you dont want to specify file location): ")
+            "Enter the optional file location (~/Downloads): ")
 
         if filepath == "":
             filepath = None
@@ -274,12 +274,13 @@ if __name__ == "__main__":
 
         elif format == 2:
             res = input(
-                "Enter desired resoulution for the video (example: '720p'): ").strip()
+                "Enter desired resoulution for the video (720p): ").strip()
             available_res = ["2160p", "1440p", "1080p",
-                            "720p", "480p", "360p", "240p", "144p"]
+                             "720p", "480p", "360p", "240p", "144p"]
 
             if res not in available_res:
-                print("Invalid resolution! Resolutions can range in", " ".join(available_res))
+                print("Invalid resolution! Resolutions can range in",
+                      " ".join(available_res))
                 quit()
 
             print("Wait while the download is being started...")
@@ -299,7 +300,7 @@ if __name__ == "__main__":
             "What do you want to download from the playlist:\n 1. Audio \n 2. Video \n"))
 
         filepath = input(
-            "Enter the optional file location (press enter if you dont want to specify file location): ")
+            "Enter the optional file location (~/Downloads): ")
 
         if filepath == "":
             filepath = None
@@ -311,12 +312,13 @@ if __name__ == "__main__":
 
         elif format == 2:
             res = input(
-                "Enter desired resoulution for the video (example: '720p'): ").strip()
+                "Enter desired resoulution for the video (720p): ").strip()
             available_res = ["2160p", "1440p", "1080p",
                              "720p", "480p", "360p", "240p", "144p"]
 
             if res not in available_res:
-                print("Invalid resolution! Resolutions can range in", available_res)
+                print("Invalid resolution! Resolutions can range in",
+                      " ".join(available_res))
                 quit()
 
             print("Wait while the download is being started...")
