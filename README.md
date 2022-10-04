@@ -1,8 +1,8 @@
 # YouTube - Automations
-The **YouTube - Automations** repo is a collection of the following two YouTube automations scripts:
+The **YouTube - Automations** repo is a collection of the following three YouTube automations scripts:
 * **YouTube Channel Tracker**
 * **YouTube Downloader**
-
+* **Youtube Channel Like ratio**
 
 # YouTube Channel Tracker
 
@@ -45,9 +45,13 @@ The **Youtube Downloader** is an interface to download youtube videos with the h
 ## Features
 * Download any YouTube video in desired format (audio/video)
 * Download the video in desired resolution
-* Donwload playlists as a whole, again in desired format and resolution
+* Download playlists as a whole, again in desired format and resolution
 * Watch the download progress
 * Efficient exception handling
+
+# Youtube Channel Like ratio
+The **Youtube Channel Like ratio** computes the average like ratio of any Youtube channel by fetching the video ids of the 25 latest videos that's been uploaded on the channel and extracting the number of likes and dislikes from [this link](https://returnyoutubedislikeapi.com/votes?videoId={video_id}). It uses ``scrapetube`` package to fetch the video ids of the channel. Note that you need to pass the channel ID as a parameter to the ```get_video_ids``` function.
+
 
 # Installation
 ## Using Git
@@ -69,6 +73,7 @@ You can alternatively download the repository as a zip file using the GitHub **D
 - validators
 - requests
 - pytube
+- scrapetube
 
 Run the command ```pip install -r requirements.txt``` to install all these dependencies at once.
 
