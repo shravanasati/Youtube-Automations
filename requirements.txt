@@ -13,3 +13,5 @@ tqdm == 4.61.2
 validators == 0.18.1
 
 win10toast == 0.9
+
+scrapetube
